@@ -64,6 +64,21 @@
     padding: 0 24px;
   }
 
+  /* SCROLL PROGRESS */
+  .scroll-progress{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+  .scroll-progress-fill{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--amber));
+    transition: width 0.08s linear;
+  }
+
   nav{
     position: sticky;
     top: 0;
@@ -83,6 +98,20 @@
     font-weight: 700;
     font-size: 1.1rem;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    background: var(--amber);
+    color: #1a1204;
+    font-size: 0.85rem;
+    font-weight: 700;
   }
   .brand .dot{ color: var(--amber); }
   nav ul{
@@ -102,6 +131,32 @@
     padding: 100px 0 80px;
     text-align: left;
   }
+  .status-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    margin-bottom: 22px;
+  }
+  .status-pill .pulse{
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #6fce8f;
+    box-shadow: 0 0 0 0 rgba(111,206,143,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(111,206,143,0.5); }
+    70%{ box-shadow: 0 0 0 6px rgba(111,206,143,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(111,206,143,0); }
+  }
+
   .eyebrow{
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -193,44 +248,37 @@
     color: var(--muted);
   }
 
-  /* SKILLS — Explorer panel style */
-  .explorer{
+  /* SKILLS — grouped chips */
+  .skill-group{ margin-bottom: 26px; }
+  .skill-group:last-child{ margin-bottom: 0; }
+  .skill-group-label{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .skill-group-label .dot{
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .skill-group-label .dot.core{ background: #6fce8f; }
+  .skill-group-label .dot.learning{ background: var(--amber); }
+  .chip-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip{
     background: var(--panel);
     border: 1px solid var(--panel-line);
     border-radius: 8px;
-    overflow: hidden;
+    padding: 9px 14px;
+    font-size: 0.88rem;
+    color: var(--text);
   }
-  .explorer-row{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--panel-line);
-  }
-  .explorer-row:last-child{ border-bottom: none; }
-  .explorer-row .name{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.92rem;
-  }
-  .explorer-row .name .icon{
-    width: 8px; height: 8px;
-    border-radius: 2px;
-    background: var(--blue);
-    flex-shrink: 0;
-  }
-  .explorer-row .status{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    padding: 4px 10px;
-    border: 1px solid var(--panel-line);
-    border-radius: 20px;
-  }
-  .explorer-row .status.learning{ color: var(--amber); border-color: rgba(242,184,75,0.3); }
-  .explorer-row .status.core{ color: #6fce8f; border-color: rgba(111,206,143,0.3); }
 
   /* ROADMAP timeline */
   .roadmap{ position: relative; padding-left: 28px; }
@@ -293,19 +341,44 @@
   }
   .contact-link{
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
     background: var(--panel);
     border: 1px solid var(--panel-line);
     border-radius: 8px;
     padding: 14px 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
     color: var(--text);
     flex: 1 1 200px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
   }
-  .contact-link:hover{ border-color: var(--amber); color: var(--amber); }
-  .contact-link .icon{ color: var(--blue); }
+  .contact-link:hover{ border-color: var(--amber); }
+  .contact-link:hover .contact-value{ color: var(--amber); }
+  .contact-label{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .contact-value{
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .contact-copy{
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+  }
+  .copy-hint{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 6px;
+  }
 
   footer{
     padding: 40px 0;
@@ -329,11 +402,13 @@
 </head>
 <body>
 
+<div class="scroll-progress"><div class="scroll-progress-fill" id="scrollFill"></div></div>
+
 <div class="grid-bg"></div>
 
 <nav>
   <div class="wrap">
-    <div class="brand">Velthori<span class="dot">.</span>lua</div>
+    <div class="brand"><span class="logo-mark">V</span>Velthori<span class="dot">.</span>lua</div>
     <ul>
       <li><a href="#about">about</a></li>
       <li><a href="#skills">skills</a></li>
@@ -345,6 +420,7 @@
 </nav>
 
 <header class="hero wrap">
+  <div class="status-pill"><span class="pulse"></span>Learning &amp; building</div>
   <div class="eyebrow">workspace / Velthori / init</div>
   <h1>Building worlds in <span class="accent">Luau</span>,<br>one script at a time.</h1>
   <p class="lede">I'm Velthori — a developer building in Roblox Studio, one script at a time. This is where I track the projects, the wins, and the climb toward becoming a software engineer.</p>
@@ -378,42 +454,23 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
       <span class="path">02</span>
       <h2>Current stack</h2>
     </div>
-    <div class="explorer">
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Basic to medium UI scripts</div>
-        <div class="status core">can do</div>
+    <div class="skill-group">
+      <div class="skill-group-label"><span class="dot core"></span>Can build</div>
+      <div class="chip-row">
+        <span class="chip">Basic–medium UI scripts</span>
+        <span class="chip">Currency systems</span>
+        <span class="chip">Weapon scripting (damage, shooting, sound)</span>
+        <span class="chip">Lock and key systems</span>
+        <span class="chip">Kill bricks</span>
       </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Currency systems</div>
-        <div class="status core">can do</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Basic weapon scripting (damage, shooting, sound effects)</div>
-        <div class="status core">can do</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Lock and key systems</div>
-        <div class="status core">can do</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Kill bricks</div>
-        <div class="status core">can do</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Inventory systems (DataStore + UI updates)</div>
-        <div class="status learning">learning</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Shop systems</div>
-        <div class="status learning">learning</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Round logic</div>
-        <div class="status learning">learning</div>
-      </div>
-      <div class="explorer-row">
-        <div class="name"><span class="icon"></span>Advanced UI scripts</div>
-        <div class="status learning">learning</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label"><span class="dot learning"></span>Learning</div>
+      <div class="chip-row">
+        <span class="chip">Inventory systems (DataStore + UI)</span>
+        <span class="chip">Shop systems</span>
+        <span class="chip">Round logic</span>
+        <span class="chip">Advanced UI scripts</span>
       </div>
     </div>
   </div>
@@ -466,9 +523,18 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
       <h2>Get in touch</h2>
     </div>
     <div class="contact-grid">
-      <a class="contact-link" href="https://github.com/Velthori" target="_blank" rel="noopener"><span class="icon">↳</span>GitHub</a>
-      <a class="contact-link" href="https://www.roblox.com/users/1977330252/profile" target="_blank" rel="noopener"><span class="icon">↳</span>Roblox</a>
-      <a class="contact-link" href="https://discord.gg/xKQ5U6Rh" target="_blank" rel="noopener"><span class="icon">↳</span>Discord</a>
+      <a class="contact-link" href="https://github.com/Velthori" target="_blank" rel="noopener">
+        <span class="contact-label">GitHub</span>
+        <span class="contact-value">Velthori</span>
+      </a>
+      <a class="contact-link" href="https://www.roblox.com/users/1977330252/profile" target="_blank" rel="noopener">
+        <span class="contact-label">Roblox</span>
+        <span class="contact-value">profile</span>
+      </a>
+      <button class="contact-link contact-copy" type="button" data-copy="velthori" onclick="copyDiscord(this)">
+        <span class="contact-label">Discord</span>
+        <span class="contact-value">velthori <span class="copy-hint">click to copy</span></span>
+      </button>
     </div>
   </div>
 </section>
@@ -476,6 +542,42 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
 <footer>
   Velthori.lua — built and still building
 </footer>
+
+<script>
+  function updateScrollProgress(){
+    var fill = document.getElementById('scrollFill');
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    fill.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener('resize', updateScrollProgress);
+  updateScrollProgress();
+
+  function copyDiscord(btn){
+    var username = btn.getAttribute('data-copy');
+    var valueEl = btn.querySelector('.contact-value');
+    var original = valueEl.innerHTML;
+
+    function showCopied(){
+      valueEl.textContent = 'Copied!';
+      setTimeout(function(){ valueEl.innerHTML = original; }, 1500);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(username).then(showCopied).catch(showCopied);
+    } else {
+      var temp = document.createElement('textarea');
+      temp.value = username;
+      document.body.appendChild(temp);
+      temp.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(temp);
+      showCopied();
+    }
+  }
+</script>
 
 </body>
 </html>
