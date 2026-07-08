@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velthori — Luau Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0F19;
+    --panel: #121a2c;
+    --panel-line: #232f47;
+    --amber: #F2B84B;
+    --blue: #7C9CFF;
+    --text: #E8ECF5;
+    --muted: #8A93A6;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* baseplate grid backdrop */
+  .grid-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--panel-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--panel-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--amber); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  nav{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(11,15,25,0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--panel-line);
+  }
+  nav .wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .brand .dot{ color: var(--amber); }
+  nav ul{
+    list-style: none;
+    display: flex;
+    gap: 28px;
+  }
+  nav a{
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  nav a:hover{ color: var(--amber); }
+
+  /* HERO */
+  .hero{
+    padding: 100px 0 80px;
+    text-align: left;
+  }
+  .eyebrow{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{ content: "> "; color: var(--amber); }
+
+  .hero h1{
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 .accent{ color: var(--amber); }
+
+  .hero p.lede{
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+
+  .terminal{
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 10px;
+    max-width: 560px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  .terminal-bar{
+    display: flex;
+    gap: 7px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .terminal-bar span{
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #2c3752;
+  }
+  .terminal pre{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    padding: 18px 20px;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .terminal .c1{ color: var(--blue); }
+  .terminal .c2{ color: var(--amber); }
+  .terminal .c3{ color: #6fce8f; }
+  .terminal .c4{ color: var(--muted); }
+  .cursor{
+    display: inline-block;
+    width: 8px; height: 1em;
+    background: var(--amber);
+    vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  /* SECTIONS */
+  section{ padding: 70px 0; border-top: 1px solid var(--panel-line); }
+  .section-head{
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+  .section-head .path{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .section-head h2{ font-size: 1.6rem; }
+
+  /* ABOUT */
+  .about-panel{
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-left: 3px solid var(--amber);
+    border-radius: 8px;
+    padding: 28px 30px;
+  }
+  .about-panel p{ color: var(--text); font-size: 1.02rem; }
+  .about-panel .signoff{
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* SKILLS — Explorer panel style */
+  .explorer{
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .explorer-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .explorer-row:last-child{ border-bottom: none; }
+  .explorer-row .name{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+  }
+  .explorer-row .name .icon{
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+  .explorer-row .status{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--panel-line);
+    border-radius: 20px;
+  }
+  .explorer-row .status.learning{ color: var(--amber); border-color: rgba(242,184,75,0.3); }
+  .explorer-row .status.core{ color: #6fce8f; border-color: rgba(111,206,143,0.3); }
+
+  /* ROADMAP timeline */
+  .roadmap{ position: relative; padding-left: 28px; }
+  .roadmap::before{
+    content: "";
+    position: absolute;
+    left: 6px; top: 6px; bottom: 6px;
+    width: 1px;
+    background: var(--panel-line);
+  }
+  .road-item{ position: relative; padding-bottom: 32px; }
+  .road-item:last-child{ padding-bottom: 0; }
+  .road-item::before{
+    content: "";
+    position: absolute;
+    left: -28px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--blue);
+  }
+  .road-item.active::before{ border-color: var(--amber); background: var(--amber); }
+  .road-item .stage{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .road-item h3{ font-size: 1.05rem; margin-bottom: 6px; }
+  .road-item p{ color: var(--muted); font-size: 0.95rem; }
+
+  /* PROJECTS — building state */
+  .build-card{
+    background: var(--panel);
+    border: 1px dashed var(--panel-line);
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+  }
+  .build-card .icon-row{
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .build-card .icon-row span{
+    width: 14px; height: 14px;
+    background: var(--panel-line);
+    border-radius: 3px;
+  }
+  .build-card .icon-row span:nth-child(2){ background: var(--blue); opacity: 0.8; }
+  .build-card h3{ font-size: 1.15rem; margin-bottom: 10px; }
+  .build-card p{ color: var(--muted); max-width: 460px; margin: 0 auto; }
+
+  /* CONTACT */
+  .contact-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .contact-link{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text);
+    flex: 1 1 200px;
+  }
+  .contact-link:hover{ border-color: var(--amber); color: var(--amber); }
+  .contact-link .icon{ color: var(--blue); }
+
+  footer{
+    padding: 40px 0;
+    border-top: 1px solid var(--panel-line);
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 640px){
+    .hero{ padding: 70px 0 50px; }
+    section{ padding: 50px 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor{ animation: none; }
+    html{ scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Velthori<span class="dot">.</span>lua</div>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#roadmap">roadmap</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">workspace / Velthori / init</div>
+  <h1>Building worlds in <span class="accent">Luau</span>,<br>one script at a time.</h1>
+  <p class="lede">I'm Velthori — a developer learning to script and build inside Roblox Studio. This is where I'm tracking the climb toward becoming a software engineer.</p>
+
+  <div class="terminal">
+    <div class="terminal-bar"><span></span><span></span><span></span></div>
+    <pre><span class="c1">local</span> Velthori = <span class="c2">require</span>(Growth)
+
+Velthori.<span class="c3">status</span> = <span class="c4">"in progress"</span>
+Velthori.<span class="c3">stack</span>  = { <span class="c4">"Luau"</span>, <span class="c4">"Roblox Studio"</span> }
+Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</span><span class="cursor"></span></pre>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="path">01</span>
+      <h2>About</h2>
+    </div>
+    <div class="about-panel">
+      <p>Every line of code represents another step toward my goal of becoming a software engineer. This portfolio showcases my projects, what I'm learning, what I'm capable of, and the progress I'm making as I continue to grow as a developer.</p>
+      <div class="signoff">— Velthori</div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="path">02</span>
+      <h2>Current stack</h2>
+    </div>
+    <div class="explorer">
+      <div class="explorer-row">
+        <div class="name"><span class="icon"></span>Luau (Roblox scripting)</div>
+        <div class="status core">core</div>
+      </div>
+      <div class="explorer-row">
+        <div class="name"><span class="icon"></span>Roblox Studio</div>
+        <div class="status core">core</div>
+      </div>
+      <div class="explorer-row">
+        <div class="name"><span class="icon"></span>Game systems &amp; scripting logic</div>
+        <div class="status learning">learning</div>
+      </div>
+      <div class="explorer-row">
+        <div class="name"><span class="icon"></span>Software engineering fundamentals</div>
+        <div class="status learning">learning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="path">03</span>
+      <h2>Roadmap</h2>
+    </div>
+    <div class="roadmap">
+      <div class="road-item active">
+        <div class="stage">now</div>
+        <h3>Learning Luau fundamentals</h3>
+        <p>Getting comfortable with scripting logic, events, and the Roblox Studio workflow.</p>
+      </div>
+      <div class="road-item">
+        <div class="stage">next</div>
+        <h3>Shipping first scripts</h3>
+        <p>Building small, functional systems inside Roblox — the first pieces that will land in the projects section below.</p>
+      </div>
+      <div class="road-item">
+        <div class="stage">later</div>
+        <h3>Broadening the stack</h3>
+        <p>Growing beyond Luau into general software engineering skills.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="path">04</span>
+      <h2>Projects</h2>
+    </div>
+    <div class="build-card">
+      <div class="icon-row"><span></span><span></span><span></span></div>
+      <h3>First builds are loading</h3>
+      <p>Nothing shipped here yet — but it's coming. Check back soon to see the scripts and systems I'm building in Roblox Studio.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="path">05</span>
+      <h2>Get in touch</h2>
+    </div>
+    <div class="contact-grid">
+      <a class="contact-link" href="#"><span class="icon">↳</span>GitHub — add your link</a>
+      <a class="contact-link" href="#"><span class="icon">↳</span>Roblox profile — add your link</a>
+      <a class="contact-link" href="#"><span class="icon">↳</span>Email — add your address</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Velthori.lua — built and still building
+</footer>
+
+</body>
+</html>
