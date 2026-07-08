@@ -280,35 +280,61 @@
     color: var(--text);
   }
 
-  /* ROADMAP timeline */
-  .roadmap{ position: relative; padding-left: 28px; }
-  .roadmap::before{
-    content: "";
-    position: absolute;
-    left: 6px; top: 6px; bottom: 6px;
-    width: 1px;
-    background: var(--panel-line);
+  /* SCRIPT DEMOS — video gallery */
+  .demo-gallery{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
   }
-  .road-item{ position: relative; padding-bottom: 32px; }
-  .road-item:last-child{ padding-bottom: 0; }
-  .road-item::before{
-    content: "";
-    position: absolute;
-    left: -28px; top: 4px;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--blue);
+  .demo-card{
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 10px;
+    overflow: hidden;
   }
-  .road-item.active::before{ border-color: var(--amber); background: var(--amber); }
-  .road-item .stage{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+  .demo-video-wrap{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #060911;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .demo-video-wrap video{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    background: #060911;
+  }
+  .demo-empty{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     color: var(--muted);
-    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 20px;
   }
-  .road-item h3{ font-size: 1.05rem; margin-bottom: 6px; }
-  .road-item p{ color: var(--muted); font-size: 0.95rem; }
+  .demo-empty .play-icon{
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--panel-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    font-size: 1.1rem;
+  }
+  .demo-caption{
+    padding: 18px 22px;
+  }
+  .demo-caption h3{ font-size: 1rem; margin-bottom: 4px; }
+  .demo-caption p{ color: var(--muted); font-size: 0.9rem; }
 
   /* PROJECTS — building state */
   .build-card{
@@ -412,7 +438,7 @@
     <ul>
       <li><a href="#about">about</a></li>
       <li><a href="#skills">skills</a></li>
-      <li><a href="#roadmap">roadmap</a></li>
+      <li><a href="#demos">demos</a></li>
       <li><a href="#projects">projects</a></li>
       <li><a href="#contact">contact</a></li>
     </ul>
@@ -476,29 +502,15 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
   </div>
 </section>
 
-<section id="roadmap">
+<section id="demos">
   <div class="wrap">
     <div class="section-head">
       <span class="path">03</span>
-      <h2>Roadmap</h2>
+      <h2>Script demos</h2>
     </div>
-    <div class="roadmap">
-      <div class="road-item active">
-        <div class="stage">now</div>
-        <h3>Learning Luau fundamentals</h3>
-        <p>Getting comfortable with scripting logic, events, and the Roblox Studio workflow.</p>
-      </div>
-      <div class="road-item">
-        <div class="stage">next</div>
-        <h3>Shipping first scripts</h3>
-        <p>Turning small systems into working builds — the first of these will land in the projects section below.</p>
-      </div>
-      <div class="road-item">
-        <div class="stage">later</div>
-        <h3>Broadening the stack</h3>
-        <p>Growing beyond Luau into general software engineering skills.</p>
-      </div>
-    </div>
+    <div class="demo-gallery" id="demoGallery"></div>
+  </div>
+</section>
   </div>
 </section>
 
@@ -544,6 +556,35 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
 </footer>
 
 <script>
+  // ---- Add a new demo clip by adding a line here, then upload the matching file to /videos ----
+  var demoClips = [
+    { src: 'videos/demo1.mp4', title: 'Script demo 1', description: 'A short clip of one of my Luau scripts running in Roblox Studio.' }
+    // { src: 'videos/demo2.mp4', title: 'Script demo 2', description: 'Description of what this one shows.' },
+  ];
+
+  (function(){
+    var gallery = document.getElementById('demoGallery');
+    if (!gallery) return;
+
+    demoClips.forEach(function(clip, i){
+      var card = document.createElement('div');
+      card.className = 'demo-card';
+      card.innerHTML =
+        '<div class="demo-video-wrap">' +
+          '<video controls preload="metadata"><source src="' + clip.src + '" type="video/mp4"></video>' +
+          '<div class="demo-empty"><div class="play-icon">▶</div><span>No demo uploaded yet — check back soon</span></div>' +
+        '</div>' +
+        '<div class="demo-caption"><h3>' + clip.title + '</h3><p>' + clip.description + '</p></div>';
+
+      var video = card.querySelector('video');
+      var empty = card.querySelector('.demo-empty');
+      video.addEventListener('loadedmetadata', function(){ empty.style.display = 'none'; });
+      video.addEventListener('error', function(){ empty.style.display = 'flex'; });
+
+      gallery.appendChild(card);
+    });
+  })();
+
   function updateScrollProgress(){
     var fill = document.getElementById('scrollFill');
     var scrollTop = window.scrollY || document.documentElement.scrollTop;
