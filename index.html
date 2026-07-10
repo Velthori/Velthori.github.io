@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velthori's Portfolio</title>
+<title>Vel's Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0B0F19;
-    --panel: #121a2c;
-    --panel-line: #232f47;
-    --amber: #F2B84B;
-    --blue: #7C9CFF;
+    --bg: #0B0C12;
+    --panel: #14151D;
+    --panel-line: #262838;
+    --violet: #8C7CFF;
+    --mint: #2FE6B0;
     --text: #E8ECF5;
     --muted: #8A93A6;
   }
@@ -57,11 +57,11 @@
 
   .mono{ font-family: 'JetBrains Mono', monospace; }
 
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { color: var(--amber); }
+  a { color: var(--mint); text-decoration: none; }
+  a:hover { color: var(--violet); }
 
   a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--amber);
+    outline: 2px solid var(--violet);
     outline-offset: 3px;
   }
 
@@ -82,7 +82,7 @@
   .scroll-progress-fill{
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, var(--blue), var(--amber));
+    background: linear-gradient(90deg, var(--mint), var(--violet));
     transition: width 0.08s linear;
   }
 
@@ -118,13 +118,13 @@
     justify-content: center;
     width: 26px; height: 26px;
     border-radius: 7px;
-    background: var(--amber);
-    color: #1a1204;
+    background: var(--violet);
+    color: #1A1030;
     font-size: 0.85rem;
     font-weight: 700;
     flex-shrink: 0;
   }
-  .brand .dot{ color: var(--amber); }
+  .brand .dot{ color: var(--violet); }
   nav ul{
     list-style: none;
     display: flex;
@@ -133,15 +133,20 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 0 2px;
+    flex: 1 1 auto;
+    min-width: 0;
+    mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
   }
   nav ul::-webkit-scrollbar{ display: none; }
+  nav ul li{ flex-shrink: 0; }
   nav a{
     color: var(--muted);
     font-size: 0.9rem;
     font-family: 'JetBrains Mono', monospace;
     white-space: nowrap;
   }
-  nav a:hover{ color: var(--amber); }
+  nav a:hover{ color: var(--violet); }
 
   /* HERO */
   .hero{
@@ -164,14 +169,14 @@
   .status-pill .pulse{
     width: 7px; height: 7px;
     border-radius: 50%;
-    background: #6fce8f;
-    box-shadow: 0 0 0 0 rgba(111,206,143,0.6);
+    background: var(--mint);
+    box-shadow: 0 0 0 0 rgba(47,230,176,0.6);
     animation: pulse 2s infinite;
   }
   @keyframes pulse{
-    0%{ box-shadow: 0 0 0 0 rgba(111,206,143,0.5); }
-    70%{ box-shadow: 0 0 0 6px rgba(111,206,143,0); }
-    100%{ box-shadow: 0 0 0 0 rgba(111,206,143,0); }
+    0%{ box-shadow: 0 0 0 0 rgba(47,230,176,0.5); }
+    70%{ box-shadow: 0 0 0 6px rgba(47,230,176,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(47,230,176,0); }
   }
 
   .eyebrow{
@@ -180,14 +185,14 @@
     color: var(--muted);
     margin-bottom: 18px;
   }
-  .eyebrow::before{ content: "> "; color: var(--amber); }
+  .eyebrow::before{ content: "> "; color: var(--violet); }
 
   .hero h1{
     font-size: clamp(2.2rem, 6vw, 3.6rem);
     line-height: 1.1;
     margin-bottom: 20px;
   }
-  .hero h1 .accent{ color: var(--amber); }
+  .hero h1 .accent{ color: var(--violet); }
 
   .hero p.lede{
     color: var(--muted);
@@ -223,14 +228,14 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .terminal .c1{ color: var(--blue); }
-  .terminal .c2{ color: var(--amber); }
-  .terminal .c3{ color: #6fce8f; }
+  .terminal .c1{ color: var(--mint); }
+  .terminal .c2{ color: var(--violet); }
+  .terminal .c3{ color: var(--text); }
   .terminal .c4{ color: var(--muted); }
   .cursor{
     display: inline-block;
     width: 8px; height: 1em;
-    background: var(--amber);
+    background: var(--violet);
     vertical-align: text-bottom;
     animation: blink 1s steps(1) infinite;
   }
@@ -255,7 +260,7 @@
   .about-panel{
     background: var(--panel);
     border: 1px solid var(--panel-line);
-    border-left: 3px solid var(--amber);
+    border-left: 3px solid var(--violet);
     border-radius: 8px;
     padding: 28px 30px;
   }
@@ -283,8 +288,8 @@
     width: 7px; height: 7px;
     border-radius: 50%;
   }
-  .skill-group-label .dot.core{ background: #6fce8f; }
-  .skill-group-label .dot.learning{ background: var(--amber); }
+  .skill-group-label .dot.core{ background: var(--mint); }
+  .skill-group-label .dot.learning{ background: var(--violet); }
   .chip-row{
     display: flex;
     flex-wrap: wrap;
@@ -346,7 +351,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--blue);
+    color: var(--mint);
     font-size: 1.1rem;
   }
   .demo-caption{
@@ -374,7 +379,7 @@
     background: var(--panel-line);
     border-radius: 3px;
   }
-  .build-card .icon-row span:nth-child(2){ background: var(--blue); opacity: 0.8; }
+  .build-card .icon-row span:nth-child(2){ background: var(--mint); opacity: 0.8; }
   .build-card h3{ font-size: 1.15rem; margin-bottom: 10px; }
   .build-card p{ color: var(--muted); max-width: 460px; margin: 0 auto; }
 
@@ -399,8 +404,8 @@
     cursor: pointer;
     text-align: left;
   }
-  .contact-link:hover{ border-color: var(--amber); }
-  .contact-link:hover .contact-value{ color: var(--amber); }
+  .contact-link:hover{ border-color: var(--violet); }
+  .contact-link:hover .contact-value{ color: var(--violet); }
   .contact-label{
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
