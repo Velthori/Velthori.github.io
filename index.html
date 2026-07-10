@@ -19,7 +19,12 @@
 
   *{ box-sizing: border-box; margin:0; padding:0; }
 
-  html{ scroll-behavior: smooth; }
+  html{
+    scroll-behavior: smooth;
+    background: var(--bg);
+    overflow-x: hidden;
+    width: 100%;
+  }
 
   body{
     background: var(--bg);
@@ -27,6 +32,8 @@
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    overscroll-behavior-y: none;
   }
 
   /* baseplate grid backdrop */
@@ -92,6 +99,7 @@
     align-items: center;
     justify-content: space-between;
     height: 64px;
+    gap: 12px;
   }
   .brand{
     font-family: 'Space Grotesk', sans-serif;
@@ -101,6 +109,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .logo-mark{
     display: flex;
@@ -112,17 +122,24 @@
     color: #1a1204;
     font-size: 0.85rem;
     font-weight: 700;
+    flex-shrink: 0;
   }
   .brand .dot{ color: var(--amber); }
   nav ul{
     list-style: none;
     display: flex;
     gap: 28px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 2px;
   }
+  nav ul::-webkit-scrollbar{ display: none; }
   nav a{
     color: var(--muted);
     font-size: 0.9rem;
     font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
   }
   nav a:hover{ color: var(--amber); }
 
@@ -184,6 +201,7 @@
     border: 1px solid var(--panel-line);
     border-radius: 10px;
     max-width: 560px;
+    width: 100%;
     overflow: hidden;
     box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
   }
@@ -203,6 +221,7 @@
     padding: 18px 20px;
     color: var(--text);
     white-space: pre-wrap;
+    word-break: break-word;
   }
   .terminal .c1{ color: var(--blue); }
   .terminal .c2{ color: var(--amber); }
@@ -415,9 +434,35 @@
     font-size: 0.8rem;
   }
 
+  /* MOBILE */
   @media (max-width: 640px){
+    .wrap{ padding: 0 18px; }
+
+    nav .wrap{ height: 58px; gap: 10px; }
+    .brand{ font-size: 1rem; gap: 8px; }
+    .logo-mark{ width: 24px; height: 24px; font-size: 0.8rem; }
+    nav ul{ gap: 18px; }
+    nav a{ font-size: 0.82rem; }
+
     .hero{ padding: 70px 0 50px; }
+    .hero h1{ font-size: clamp(1.8rem, 8vw, 2.4rem); }
+    .hero p.lede{ font-size: 1rem; }
+
+    .terminal pre{ font-size: 0.78rem; padding: 16px; }
+
     section{ padding: 50px 0; }
+    .section-head h2{ font-size: 1.35rem; }
+
+    .about-panel{ padding: 22px 20px; }
+
+    .demo-gallery{ grid-template-columns: 1fr; }
+
+    .contact-link{ flex: 1 1 100%; }
+  }
+
+  @media (max-width: 400px){
+    nav ul{ gap: 14px; }
+    .brand span.dot + span, .brand{ font-size: 0.92rem; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -511,8 +556,6 @@ Velthori.<span class="c3">goal</span>   = <span class="c4">"software engineer"</
       <h2>Script demos</h2>
     </div>
     <div class="demo-gallery" id="demoGallery"></div>
-  </div>
-</section>
   </div>
 </section>
 
